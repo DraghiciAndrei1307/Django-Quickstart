@@ -97,3 +97,87 @@ The router (check the `urls.py` script) basically links the URL and the UserView
     - PUT /users/1/
 
 The UserViewSet interrogates the database and returns a queryset which is transformed in a dictionary by the serializer.
+
+## My contributions
+
+After I run the Django app on a local private VM, I wanted to add new models, custom models.
+
+To do that, I simply added the following class, named `Company`, into the `models.py` script.
+
+```python
+class Company(models.Model):
+
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+```
+
+After that, I created the `CompanySerializer` inside the `serializers.py` script like this:
+
+```python
+from tutorial.quickstart.models import Company
+
+class CompanySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Company
+        fields = ["url", "name"]
+```
+
+And then, I created the `CompanyViewSet` inside the `views.py` script like this: 
+
+```python
+from tutorial.quickstart.serializers import CompanySerializer
+
+class CompanyViewSet(viewsets.ModelViewSet):
+
+    queryset = Company.objects.all()
+    serializer_class = CompanySerializer
+    permission_classes = [permissions.IsAuthenticated]
+```
+
+In the end, I updated the `urls.py` script with the following line, so that the router generate the routes for me:
+```python
+router.register(r"companies", views.CompanyViewSet)
+```
+
+To make everything above work, on my private VM, I used the following commands to update the SQLite database:
+
+```commandline
+python manage.py makemigrations
+python manage.py makemigrations
+```
+
+Finally, I run the application once again:
+
+```commandline
+python manage.py runserver 0.0.0.0:8000
+```
+
+### Interesting things discovered
+
+This command `python manage.py makemigrations` basically checks the database structure against our models defined 
+inside the `models.py` script. If detects that anything was changed, then it will create a migration file inside the 
+tutorial/quickstart/migrations/ folder. This is the output I got:
+
+```terminaloutput
+(.venv) [student@localhost Django-Quickstart]$ python manage.py makemigrations
+Migrations for 'quickstart':
+  tutorial/quickstart/migrations/0001_initial.py
+    - Create model Company
+```
+
+The following command `python manage.py migrate` reads all the files from migrations/ which were not applied. 
+It applies all the instructions recorded in the unapplied files (creates tables, columns, relations, etc.).   
+
+This is the output received:
+
+```terminaloutput
+(.venv) [student@localhost Django-Quickstart]$ python manage.py migrate
+Operations to perform:
+  Apply all migrations: admin, auth, contenttypes, quickstart, sessions
+Running migrations:
+  Applying quickstart.0001_initial... OK
+```
+
+
