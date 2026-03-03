@@ -16,7 +16,7 @@ jobs:
           python3 -m venv .venv
           source .venv/bin/activate
       - name: Install Django REST Framework into the virtual env
-        run: pip install djangorestframework
+        run: pip install -r requirements.txt
       - name: Check for structural DB changes
         run: python manage.py makemigrations
       - name: Sync the SQLite database

@@ -33,7 +33,7 @@ source .venv/bin/activate
 2) Install Django and Django REST into the virtual environment
 
 ```commandline
-pip install djangorestframework
+pip install -r requirements.txt
 ```
 
 3) Sync your database for the first time
