@@ -145,7 +145,7 @@ To make everything above work, on my private VM, I used the following commands t
 
 ```commandline
 python manage.py makemigrations
-python manage.py makemigrations
+python manage.py migrate
 ```
 
 Finally, I run the application once again:
