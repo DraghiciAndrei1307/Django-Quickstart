@@ -1,4 +1,4 @@
-name: Deployment
+name: Deploy Test
 on: workflow_dispatch
 jobs:
   test:
@@ -25,4 +25,6 @@ jobs:
       - name: Access the API
         run: |
           curl -u admin:${{ env.DJANGO_SUPERUSER_PASSWORD }} -H 'Accept: application/json; indent=4' http://127.0.0.1:8000/users/
+          curl -u admin:${{ env.DJANGO_SUPERUSER_PASSWORD }} -H 'Accept: application/json; indent=4' http://127.0.0.1:8000/groups/
+          curl -u admin:${{ env.DJANGO_SUPERUSER_PASSWORD }} -H 'Accept: application/json; indent=4' http://127.0.0.1:8000/companies/
           
