@@ -1,0 +1,27 @@
+name: Deployment
+on: workflow_dispatch
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    DJANGO_SUPERUSER_PASSWORD: mock_password
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v6
+      - name: Create a virtual environment
+        run: | 
+          python3 -m venv .venv
+          source .venv/bin/activate
+      - name: Install Django REST Framework into the virtual env
+        run: pip install djangorestframework
+      - name: Sync the SQLite database
+        run: python manage.py migrate
+      - name: Create the admin user
+        run: | 
+          python manage.py createsuperuser --noinput --username admin --email admin@example.com
+      - name: Run the app
+        run: |
+          nohup python manage.py runserver & sleep 5
+      - name: Access the API
+        run: |
+          curl -u admin:${{ env.DJANGO_SUPERUSER_PASSWORD }} -H 'Accept: application/json; indent=4' http://127.0.0.1:8000/users/
+          
