@@ -2,10 +2,10 @@ from django.shortcuts import render
 
 # Create your views here.
 
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import Group, User, Permission
 from rest_framework import permissions, viewsets
 
-from tutorial.quickstart.serializers import GroupSerializer, UserSerializer
+from tutorial.quickstart.serializers import GroupSerializer, UserSerializer, PermissionSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -26,3 +26,11 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all().order_by("name")
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+class PermissionViewSet(viewsets.ModelViewSet):
+
+    queryset = Permission.objects.all()
+    serializer_class = PermissionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
