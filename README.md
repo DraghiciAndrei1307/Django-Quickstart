@@ -62,7 +62,7 @@ sudo systemctl status firewalld
 
 ```commandline
 sudo systemctl start firewalld
-sudo systemctl enable firewalld=
+sudo systemctl enable firewalld
 ```
 
 - Open the port TCP 8000
@@ -75,6 +75,11 @@ sudo firewall-cmd --permanent --add-port=8000/tcp
 
 ```commandline
 sudo firewall-cmd --reload
+```
+
+- Check the open ports (you should see the port you just opened before)
+```commandline
+sudo firewall-cmd --list-ports
 ```
 
 6) Run the Django REST server app
